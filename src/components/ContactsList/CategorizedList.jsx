@@ -14,14 +14,11 @@ const CategorizedList = ({ contacts }) => {
   const { t } = useI18n()
   const categorizedContacts = categorizeContacts(contacts, t('empty-list'));
   const categories = Object.entries(categorizedContacts);
-  const categoryRefs = useRef(Array.from({ length: categories.length }, () => React.createRef()));
+  const categoryRefs = useRef({}).current;
+  const addCategory = (header) => ref => { categoryRefs[header] = ref };
 
-  useEffect(() => {
-    categoryRefs.current[categoryRefs.current.length - 1].current.focus()
-  }, [length]);
-
-  function scrollToCategory(index) {
-    const ref = categoryRefs.current[index].current;
+  function scrollToCategory(header) {
+    const ref = categoryRefs[header];
     if (ref) {
       ref.scrollIntoView({ behavior: 'smooth' })
     }
@@ -30,9 +27,9 @@ const CategorizedList = ({ contacts }) => {
   return (
     <>
       <div className="categories">
-        {categories.map(([header, _], i) => (
+        {categories.map(([header, _]) => (
           <Button
-            onClick={_ => scrollToCategory(i)}
+            onClick={_ => scrollToCategory(header)}
             label={header}
             theme="secondary"
             extension="narrow"
@@ -40,9 +37,9 @@ const CategorizedList = ({ contacts }) => {
         ))}
       </div>
       <Table>
-        {categories.map(([header, contacts], i) => (
+        {categories.map(([header, contacts]) => (
           <List key={`cat-${header}`}>
-            <ListSubheader key={header} ref={categoryRefs.current[i]}>
+            <ListSubheader key={header} ref={addCategory(header)}>
               {header}
             </ListSubheader>
             <ContactsSubList contacts={contacts} />
