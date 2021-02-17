@@ -26,6 +26,9 @@ const ContactsList = ({ contacts, clearSelection, selection, selectAll }) => {
     isAllContactsSelected ? clearSelection() : selectAll(contacts)
   }
 
+  //  Idéalement, c'est à ce niveau qu'il faudrait mettre les boutons, pour qu'ils restent visibles lorsque
+  //  l'on scroll dans la liste. Seulement, ça rend plus complexe le lien entre les boutons et les composants
+  //  référencés, et la fonctionnalité n'a de toute façon pas de sens pour la liste non catégorisée.
   return (
     <div className="list-wrapper">
       {flag('select-all-contacts') && (

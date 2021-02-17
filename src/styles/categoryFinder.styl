@@ -1,0 +1,14 @@
+@require 'components/table.styl'
+
+.categories
+    display flex
+    flex-wrap wrap
+
+    +small-screen()
+        justify-content center
+
+.categories > *
+    margin-bottom 15px
+
+    +small-screen()
+        margin-bottom 5px
